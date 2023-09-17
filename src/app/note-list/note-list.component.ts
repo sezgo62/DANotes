@@ -13,7 +13,7 @@ export class NoteListComponent {
   favFilter: "all" | "fav" = "all";
   status: "notes" | "trash" = "notes";
 
-  constructor(private noteService: FirebaseService) {
+  constructor(public noteService: NoteListService) {
     this.noteList = this.getDummyData()
   }
 
