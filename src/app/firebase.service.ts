@@ -13,18 +13,18 @@ export class FirebaseService {
   item;
 
   constructor() {
-    this.item$ = collectionData(this.getNotesRef());
+    /*this.item$ = collectionData(this.getNotesRef());
     this.item = this.item$.subscribe( (list) => {
       list.forEach(element => {
       console.log(element);
       });
     });
     this.item.unsubscribe();
-   }
+   
 
    //const itemCollection = collection(this.firestore, 'items');
 getNotesRef() {
-  return collection(this.firestore, 'notes');
+  return collection(this.firestore, 'notes');}*/
 }
 
 
