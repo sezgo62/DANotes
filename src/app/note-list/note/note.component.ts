@@ -19,6 +19,7 @@ export class NoteComponent {
   }
 
   deleteHovered(){
+    debugger;
     if(!this.edit){
       this.hovered = false;
     }
@@ -46,7 +47,7 @@ export class NoteComponent {
   }
 
   saveNote(){
-    
+    this.noteService.updateNote(this.note);
   }
 
 }

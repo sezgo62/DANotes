@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, doc, collectionData, onSnapshot } from '@angular/fire/firestore';
+import { Firestore, collection, doc, collectionData, onSnapshot, addDoc, DocumentReference, updateDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Note } from '../interfaces/note.interface';
 
@@ -20,6 +20,41 @@ export class NoteListService {
   constructor() {
     this.unsubTrash = this.subTrashList();
     this.unsubNotes = this.subNotesList();
+  } 
+
+  async updateNote(note: Note) {
+    if(note.id) {
+      let colRef = this.getSingleDocRef(this.getColIdFromNote(note), note.id);
+      await updateDoc(colRef, this.getCleanJson(note)).catch(
+        (err) => { console.log(err) }
+      );
+    }  
+  }
+
+  getCleanJson(note: Note) {
+    return {
+      type: note.type,
+      title: note.title,
+      content: note.content,
+      marked: note.marked
+    }
+  }
+
+  getColIdFromNote(note: Note) {
+    if(note.type == 'note') {
+      return 'notes';
+    } else {
+      return 'trash'
+    }
+  }
+
+  async addNote(item: {}) {
+    debugger;
+    await addDoc(this.getNotesRef(), item).catch(
+      (err) => { console.log(err) }
+    ).then(
+      (docRef) => { console.log('Document writen with ID: ', docRef);
+       })
   }
 
   ngOnDestroy() {
@@ -32,9 +67,8 @@ export class NoteListService {
     onSnapshot(this.getNotesRef(), (list) => { //Die onSnapshot-Methode aus dem Firebase Firestore SDK ist dazu da, um Änderungen in einer Firestore-Sammlung zu überwachen und eine Funktion auszuführen, wenn Änderungen auftreten.
       this.normalNotes = [];
       list.forEach(element => {
-       
+
         this.normalNotes.push(this.setNodeObject(element.data(), element.id));
-      debugger;
       });
     });
   }
