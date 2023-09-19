@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, doc, collectionData, onSnapshot, addDoc, DocumentReference, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, collectionData, onSnapshot, addDoc, DocumentReference, updateDoc, deleteDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Note } from '../interfaces/note.interface';
 
@@ -48,14 +48,21 @@ export class NoteListService {
     }
   }
 
-  async addNote(item: {}) {
-    debugger;
+  async addNote(item: Note, colId: 'notes' | 'trash') {
     await addDoc(this.getNotesRef(), item).catch(
       (err) => { console.log(err) }
     ).then(
       (docRef) => { console.log('Document writen with ID: ', docRef);
        })
   }
+
+async deleteNote(colId: 'notes' | 'trash', docId: string) {
+  debugger;
+  await deleteDoc(this.getSingleDocRef(colId, docId)).catch (
+    (err)  => {console.log(err);
+    }
+  )
+}
 
   ngOnDestroy() {
     this.unsubTrash(); //Wir unsubscriben hier wieder
@@ -82,8 +89,6 @@ export class NoteListService {
     });
   }
 
-
-
   //const itemCollection = collection(this.firestore, 'items');
   getNotesRef() {
     return collection(this.firestore, 'notes');
@@ -94,10 +99,10 @@ export class NoteListService {
     return collection(this.firestore, 'trash');
   }
 
-  setNodeObject(obj: any, id: string): Note {
+  setNodeObject(obj: any, id: string): Note {  //In dieser Funktion stellen wir sicher das auch jedes Feld einen Wert hat, auch wenn der user z.B. den Note speichern konnte ohne einen Titel einzugeben, wie auch immer.
     return {
       id: id,
-      type: obj.title || 'note',
+      type: obj.type || 'note',
       title: obj.title || '',
       content: obj.content || '',
       marked: obj.marked || false,

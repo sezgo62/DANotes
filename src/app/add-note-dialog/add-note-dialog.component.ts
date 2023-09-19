@@ -22,14 +22,15 @@ export class AddNoteDialogComponent {
 
   async addNote(){
     //beachte das closeDialog() zum Schluss kommt, denn es leert die Variablen
+    let colId = 'trash';
     let note = {
+      id: this.id,
       type: 'note',
       title: this.title,
       content: this.content,
       marked: false
     }
-    debugger;
-    await this.noteService.addNote(note);
+    await this.noteService.addNote(note, colId);
     this.closeDialog();
   }
 }
