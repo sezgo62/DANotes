@@ -33,7 +33,7 @@ export class NoteComponent {
     this.saveNote();
   }
 
-  moveToTrash() {      
+  moveToTrash() {
     debugger;
 
     if (this.note.id) {
@@ -44,6 +44,8 @@ export class NoteComponent {
       debugger;
 
       this.noteService.addNote(this.note, 'trash');
+      debugger;
+
       this.noteService.deleteNote('notes', docId);
     }
   }
@@ -55,7 +57,7 @@ export class NoteComponent {
 
   deleteNote() {
     debugger;
-    //this.noteService.deleteNote();
+    this.noteService.deleteNote('notes',  this.note.id);
   }
 
   saveNote() {
