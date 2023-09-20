@@ -49,7 +49,7 @@ export class NoteListService {
   }
 
   async addNote(item: Note, colId: 'notes' | 'trash') {
-    await addDoc(this.getNotesRef(), item).catch(
+    await addDoc(this.getNotesRef(), item).catch( 
       (err) => { console.log(err) }
     ).then(
       (docRef) => { console.log('Document writen with ID: ', docRef);
@@ -94,7 +94,9 @@ async deleteNote(colId: 'notes' | 'trash', docId: string) {
     return collection(this.firestore, 'notes');
   }
 
+getRef(colId) {
 
+}
   getTrashRef() {
     return collection(this.firestore, 'trash');
   }

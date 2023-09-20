@@ -26,7 +26,6 @@ export class NoteListComponent {
   }
 
   changeTrashStatus() {
-    debugger;
 
     if (this.status == "trash") {
       this.status = "notes";
