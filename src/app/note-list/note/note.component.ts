@@ -33,31 +33,55 @@ export class NoteComponent {
     this.saveNote();
   }
 
+  docId;
+
   moveToTrash() {
     debugger;
 
+
     if (this.note.id) {
-      this.note.type = 'trash';
-
-      let docId = this.note.id;
-      delete this.note.id;
       debugger;
 
-      this.noteService.addNote(this.note, 'trash');
-      debugger;
+      if (this.note.type != 'trash') {
 
-      this.noteService.deleteNote('notes', docId);
+
+        this.note.type = 'trash';
+
+        let docId = this.note.id;
+        delete this.note.id;
+        debugger;
+
+        this.noteService.addNote(this.note, 'trash');
+        debugger;
+
+        this.noteService.deleteNote('notes', docId);
+      } else {
+        this.noteService.deleteNote('notes', this.docId);
+      }
     }
   }
 
   moveToNotes() {
+    debugger;
+
     this.note.type = 'note';
+
+    this.docId = this.note.id;
+
+    delete this.note.id;
+
+    this.noteService.addNote(this.note, 'notes');
+
+    this.noteService.deleteNote('trash', this.docId);
 
   }
 
-  deleteNote() {
+  deleteNote(type: string) {
     debugger;
-    this.noteService.deleteNote('notes',  this.note.id);
+    if (type == 'trash') {
+      this.noteService.deleteNote(type, this.note.id);
+
+    }
   }
 
   saveNote() {

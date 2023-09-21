@@ -2,7 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { Firestore, collection, doc, collectionData, onSnapshot, addDoc, DocumentReference, updateDoc, deleteDoc, where, limit } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Note } from '../interfaces/note.interface';
-import { query } from '@angular/animations';
+import { query } from '@angular/fire/firestore';
+import { orderBy } from "firebase/firestore";  
 
 
 @Injectable({
@@ -73,7 +74,7 @@ async deleteNote(colId: 'notes' | 'trash', docId: string) {
 
   //Der Unterschied zwichen onSnapshot() und collectionData() ist dass wir die Schritte mit dem Observable item$ und dem subscribe sparen können.
   subNotesList() {
-    const q = query(this.getNotesRef(), where("state", "==", "CA"), limit(100));
+    const q = query(this.getNotesRef(), where("marked", "==", true), limit(4));
     return onSnapshot(q, (list) => { //Die onSnapshot-Methode aus dem Firebase Firestore SDK ist dazu da, um Änderungen in einer Firestore-Sammlung zu überwachen und eine Funktion auszuführen, wenn Änderungen auftreten.
       this.normalNotes = [];
       list.forEach(element => {
